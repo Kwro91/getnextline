@@ -6,13 +6,13 @@
 /*   By: besalort <besalort@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:45:17 by besalort          #+#    #+#             */
-/*   Updated: 2023/01/10 17:19:41 by besalort         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:58:24 by besalort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen(char *str)
 {
 	size_t	i;
 
@@ -22,90 +22,85 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_clear(char *stock, int n)
+char	*ft_strdup(char *src)
 {
 	int		i;
+	char	*dest;
 
+	if (!src)
+		return (NULL);
 	i = 0;
-	n++;
-	while (stock[n] && stock[n] != '\n' && stock[n] != EOF)
-	
+	dest = calloc (sizeof(char), ft_strlen(src) + 1);
+	if (!dest)
+		return (0);
+	while (src[i])
 	{
-		stock[i] = stock[n];
+		dest[i] = src[i];
 		i++;
-		n++;
 	}
-	stock[i] = '\0';
-	return (stock);
+	dest[i] = '\0';
+	return (dest);
 }
 
-char	*ft_big(char	*stock, int len)
+char	*ft_strjoin(char *s1, char *s2)
 {
+	size_t	i;
+	size_t	j;
 	char	*tab;
-	int		j;
 
+	if (!s1 || !s2)
+		return (NULL);
+	i = 0;
 	j = 0;
-	tab = malloc (len + 1);// si c'est pas le cas on augmente la taille de stock pour pouvoir rappeler read et continuer la ligne dans le cas ou le BUFFER_SIZE < taille ligne
+	tab = calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
+	while (s1[j])
+		tab[i++] = s1[j++];
+	j = 0;
+	while (s2[j])
+		tab[i++] = s2[j++];
+	tab[i] = '\0';
+	return (tab);
+}
+
+char	*ft_strchr(char *s, int c)
+{
+	int	i;
+
+	if (!s)
+		return (NULL);
+	i = 0;
+	while (s[i] && s[i] != (char)c)
+		i++;
+	if (s[i] == (char)c)
+		return ((char *)s + i);
+	else
+		return (NULL);
+}
+
+char	*ft_substr(char *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	char	*tab;
+
+	if (!s)
+		return (NULL);
+	i = 0;
+	if (start > ft_strlen(s) + 1)
+	{
+		tab = malloc(1);
+		if (!tab)
+			return (NULL);
+		tab[0] = '\0';
+		return (tab);
+	}
+	if (ft_strlen(&s[start]) <= len)
+		tab = malloc(sizeof(char) * ft_strlen(&s[start]) + 1);
+	else
+		tab = malloc(len + 1);
 	if (!tab)
 		return (NULL);
-	while (j < len)
-	{
-		tab[j] = stock[j];
-		j++;
-	}
-	tab[j] = '\0';
-	stock = malloc(len + BUFFER_SIZE);
-	if (!stock)
-		return (NULL);
-	j = 0;
-	while (j < len)
-	{
-		stock[j] = tab[j];
-		j++;
-	}
-	return (stock);
-}
-
-char	*ft_read(char *stock, int fd, char *buf, int len)
-{
-	int		i;
-	int		j;
-	char	*tab;
-
-	ft_strlen(stock);
-	if (i == 0)//on verifie que stock est pas vide, si c'est le cas on le malloc de la taille du buf
-		stock = malloc(len + 1);
-	if (!stock)
-		return (NULL);
-	j = 0;
-	while (buf[j])//on remplis stock avec buf
-	{
-		stock[i + j] = buf[j];
-		j++;
-	}
-	stock[i + j] = '\0';
-	i = 0;
-	j = 0;
-	while (stock[i]) 
-	{
-		if (stock[i] == '\n') // si stock est un saut a la ligne on malloc tab on copie stock avant le \n dans tab, on clear stock avant le \n et on return tab
-		{
-			tab = malloc(i);
-			if (!tab)
-				return (NULL);
-			while (j < i)
-			{
-				tab[j] = stock[j];
-				j++;
-			}
-			tab[j] = '\0';
-			ft_clear(stock, i);
-			printf("\n apres le clear, stock = %s\n", stock);
-			return (tab);
-		}
-		i++;
-	}
-	stock = ft_big(stock, len);
-	get_next_line(fd);
-	return (stock);
+	while (i < len && s[start])
+		tab[i++] = s[start++];
+	tab[i] = '\0';
+	return (tab);
 }
