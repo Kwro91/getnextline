@@ -6,7 +6,7 @@
 /*   By: besalort <besalort@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:44:54 by besalort          #+#    #+#             */
-/*   Updated: 2023/01/23 16:31:49 by besalort         ###   ########.fr       */
+/*   Updated: 2023/01/27 14:52:54 by besalort         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # endif
 
 char	*get_next_line(int fd);
-char	*ft_verif(char **stock, int nb, int fd);
-char	*ft_newline(char **stock);
+char	*ft_verif(char **stock, int nb, int fd, char **line);
+char	*ft_newline(char **stock, char **line);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *src);
 size_t	ft_strlen(char *str);
